@@ -65,7 +65,7 @@ export default function DashboardLayout({
                 <div className="flex h-full flex-col gap-4 py-4">
                   <div className="flex items-center gap-2">
                     <Image
-                      src="/placeholder.svg?height=32&width=32"
+                      src="/placeholder.svg"
                       alt="SwapSeva Logo"
                       width={32}
                       height={32}
@@ -88,6 +88,16 @@ export default function DashboardLayout({
                       >
                         <Briefcase className="h-5 w-5" />
                         Skills Barter
+                      </Button>
+                    </Link>
+                    
+                    <Link href="/dashboard/trading/goods">
+                      <Button 
+                        variant="ghost" 
+                        className={`w-full justify-start gap-2 ${pathname === '/dashboard/trading/goods' ? 'bg-accent' : ''}`}
+                      >
+                        <Briefcase className="h-5 w-5" />
+                        Goods Barter
                       </Button>
                     </Link>
                     
@@ -119,7 +129,7 @@ export default function DashboardLayout({
             <Link href="/dashboard">
               <div className="flex items-center gap-2">
                 <Image
-                  src="/placeholder.svg?height=32&width=32"
+                  src="/placeholder.svg"
                   alt="SwapSeva Logo"
                   width={32}
                   height={32}
@@ -134,7 +144,7 @@ export default function DashboardLayout({
             <ModeToggle />
             <div className="flex items-center gap-2">
               <Avatar className="h-9 w-9">
-                <AvatarImage src="/placeholder.svg?height=36&width=36" alt="User Avatar" />
+                <AvatarImage src="/placeholder-user.jpg" alt="User Avatar" />
                 <AvatarFallback>{user?.name?.charAt(0) || "U"}</AvatarFallback>
               </Avatar>
               <div className="hidden md:block">
@@ -164,6 +174,16 @@ export default function DashboardLayout({
               >
                 <Briefcase className="h-5 w-5" />
                 Skills Barter
+              </Button>
+            </Link>
+            
+            <Link href="/dashboard/trading/goods">
+              <Button 
+                variant="ghost" 
+                className={`w-full justify-start gap-2 ${pathname === '/dashboard/trading/goods' ? 'bg-accent' : ''}`}
+              >
+                <Briefcase className="h-5 w-5" />
+                Goods Barter
               </Button>
             </Link>
             

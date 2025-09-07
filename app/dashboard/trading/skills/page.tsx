@@ -99,7 +99,7 @@ export default function SkillsBarterPage() {
               id: offering._id || `skill-${Math.random().toString(36).substr(2, 9)}`,
               userId: user._id,
               userName: user.name,
-              userAvatar: user.avatar || "/placeholder.svg?height=80&width=80",
+              userAvatar: user.avatar || "/placeholder-user.jpg",
               userLocation: user.location?.address || "Location not specified",
               userTrustScore: user.trustScore || 80,
               skillName: offering.title,

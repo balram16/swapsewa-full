@@ -27,14 +27,19 @@ dotenv.config();
 
 // Make sure we have a JWT_SECRET
 if (!process.env.JWT_SECRET) {
-  console.warn("⚠️ No JWT_SECRET in environment, using fallback secret. This is not secure for production!");
-  process.env.JWT_SECRET = "mumbai_swap_dev_secret_key_2024";
+  if (process.env.NODE_ENV === 'production') {
+    console.error('❌ JWT_SECRET environment variable is required in production');
+    process.exit(1);
+  } else {
+    console.warn("⚠️ No JWT_SECRET in environment, using fallback secret. This is not secure for production!");
+    process.env.JWT_SECRET = "mumbai_swap_dev_secret_key_2024";
+  }
 }
 
 // Define frontend URL - must be specific when using credentials
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 
-// Allow multiple origins if needed
+// Allow all origins for CORS
 const allowedOrigins = [
   FRONTEND_URL,
   "https://swap-sewa.vercel.app",
@@ -45,17 +50,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: function(origin, callback) {
-      // Allow requests with no origin (like mobile apps, curl, etc)
-      if (!origin) return callback(null, true);
-      
-      if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
-        callback(null, true);
-      } else {
-        console.log("Not allowed by CORS:", origin);
-        callback(null, true); // Allow anyway for now, but log it
-      }
-    },
+    origin: true, // Allow all origins
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -63,17 +58,7 @@ const io = new Server(server, {
 
 // Middleware
 app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, etc)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
-      callback(null, true);
-    } else {
-      console.log("Not allowed by CORS:", origin);
-      callback(null, true); // Allow anyway for now, but log it
-    }
-  },
+  origin: true, // Allow all origins
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
@@ -111,7 +96,12 @@ mongoose.connection.on('disconnected', () => {
 });
 
 // Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://panigrahibalram16:Ping420+@cluster0.ne7hd.mongodb.net/Swap_sewa1', {
+if (!process.env.MONGODB_URI) {
+  console.error('❌ MONGODB_URI environment variable is required');
+  process.exit(1);
+}
+
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })

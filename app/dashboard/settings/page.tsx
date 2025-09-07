@@ -14,6 +14,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { useToast } from "@/components/ui/use-toast"
 import { Camera, Bell, Shield, User, Trash2, Save, Upload, Download, AlertTriangle, Check, X, Plus } from "lucide-react"
+import Image from "next/image"
 import { settingsAPI } from "@/lib/settings-api.js"
 
 export default function SettingsPage() {
@@ -25,6 +26,12 @@ export default function SettingsPage() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [profilePhoto, setProfilePhoto] = useState<string>("")
+  
+  // Offerings management
+  const [skillOfferings, setSkillOfferings] = useState<any[]>([])
+  const [goodOfferings, setGoodOfferings] = useState<any[]>([])
+  const [editingOffering, setEditingOffering] = useState<any>(null)
+  const [offeringDialogOpen, setOfferingDialogOpen] = useState(false)
   
   // Profile settings
   const [profileData, setProfileData] = useState({
@@ -53,6 +60,96 @@ export default function SettingsPage() {
     showEmail: false,
     showPhone: false
   })
+
+  // Load user's offerings (skills and goods)
+  const loadUserOfferings = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch("http://localhost:3001/api/users/profile", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const offerings = data.user.offerings || [];
+        setSkillOfferings(offerings.filter(o => o.type === 'skill'));
+        setGoodOfferings(offerings.filter(o => o.type === 'good'));
+      }
+    } catch (error) {
+      console.error("Error loading offerings:", error);
+    }
+  };
+
+  // Handle deleting an offering
+  const handleDeleteOffering = async (offeringId: string) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch(`http://localhost:3001/api/users/offerings/${offeringId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Deleted successfully",
+          description: "Your offering has been removed."
+        });
+        await loadUserOfferings(); // Reload offerings
+      } else {
+        throw new Error("Failed to delete offering");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete offering. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  // Handle saving/updating an offering
+  const handleSaveOffering = async (offeringData: any) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const isEditing = offeringData._id;
+      const url = isEditing 
+        ? `http://localhost:3001/api/users/offerings/${offeringData._id}`
+        : "http://localhost:3001/api/users/offerings";
+      
+      const response = await fetch(url, {
+        method: isEditing ? "PUT" : "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(offeringData)
+      });
+
+      if (response.ok) {
+        toast({
+          title: isEditing ? "Updated successfully" : "Added successfully",
+          description: `Your ${offeringData.type} has been ${isEditing ? 'updated' : 'added'}.`
+        });
+        setOfferingDialogOpen(false);
+        setEditingOffering(null);
+        await loadUserOfferings(); // Reload offerings
+      } else {
+        throw new Error(`Failed to ${isEditing ? 'update' : 'add'} offering`);
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: `Failed to ${offeringData._id ? 'update' : 'add'} offering. Please try again.`,
+        variant: "destructive"
+      });
+    }
+  };
 
   useEffect(() => {
     // Load user data from API
@@ -96,6 +193,9 @@ export default function SettingsPage() {
           localStorage.setItem("user", JSON.stringify(updatedUser));
           setUser(updatedUser);
         }
+
+        // Load user offerings
+        await loadUserOfferings();
       } catch (error) {
         console.error('Error loading settings:', error);
         // Fallback to localStorage if API fails
@@ -374,10 +474,14 @@ export default function SettingsPage() {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 h-auto">
             <TabsTrigger value="profile" className="flex items-center gap-1 md:gap-2 text-xs md:text-sm p-2 md:p-3">
               <User className="h-3 w-3 md:h-4 md:w-4" />
               <span className="hidden sm:inline">Profile</span>
+            </TabsTrigger>
+            <TabsTrigger value="offerings" className="flex items-center gap-1 md:gap-2 text-xs md:text-sm p-2 md:p-3">
+              <Plus className="h-3 w-3 md:h-4 md:w-4" />
+              <span className="hidden sm:inline">My Items</span>
             </TabsTrigger>
             <TabsTrigger value="notifications" className="flex items-center gap-1 md:gap-2 text-xs md:text-sm p-2 md:p-3">
               <Bell className="h-3 w-3 md:h-4 md:w-4" />
@@ -405,7 +509,7 @@ export default function SettingsPage() {
                 <div className="flex flex-col sm:flex-row items-center gap-4">
                   <div className="relative">
                     <Avatar className="h-20 w-20 md:h-24 md:w-24">
-                      <AvatarImage src={profilePhoto || "/placeholder.svg?height=96&width=96"} alt="Profile" />
+                      <AvatarImage src={profilePhoto || "/placeholder-user.jpg"} alt="Profile" />
                       <AvatarFallback className="text-lg md:text-xl">
                         {profileData.name?.charAt(0) || "U"}
                       </AvatarFallback>
@@ -560,6 +664,141 @@ export default function SettingsPage() {
                 </Button>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="offerings" className="space-y-6">
+            <div className="grid gap-6 md:grid-cols-2">
+              {/* Skills Offerings */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <User className="h-5 w-5" />
+                    My Skills
+                  </CardTitle>
+                  <CardDescription>
+                    Manage your skill offerings
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    {skillOfferings.map((skill, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <p className="font-medium">{skill.title}</p>
+                          <p className="text-sm text-muted-foreground">{skill.description}</p>
+                          <Badge variant="outline" className="mt-1">{skill.skillLevel}</Badge>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            onClick={() => {
+                              setEditingOffering(skill)
+                              setOfferingDialogOpen(true)
+                            }}
+                          >
+                            Edit
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="destructive"
+                            onClick={() => handleDeleteOffering(skill._id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                    {skillOfferings.length === 0 && (
+                      <p className="text-muted-foreground text-center py-4">No skills added yet</p>
+                    )}
+                  </div>
+                  <Button 
+                    onClick={() => {
+                      setEditingOffering({ type: 'skill', title: '', description: '', skillLevel: '', category: '' })
+                      setOfferingDialogOpen(true)
+                    }}
+                    className="w-full"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add New Skill
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Goods Offerings */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Plus className="h-5 w-5" />
+                    My Goods
+                  </CardTitle>
+                  <CardDescription>
+                    Manage your item listings
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    {goodOfferings.map((good, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div className="flex gap-3">
+                          {good.images && good.images.length > 0 && (
+                            <div className="w-12 h-12 relative">
+                              <Image 
+                                src={good.images[0]} 
+                                alt={good.title}
+                                fill
+                                className="object-cover rounded"
+                              />
+                            </div>
+                          )}
+                          <div>
+                            <p className="font-medium">{good.title}</p>
+                            <p className="text-sm text-muted-foreground">{good.description}</p>
+                            <div className="flex gap-2 mt-1">
+                              <Badge variant="outline">{good.condition}</Badge>
+                              <Badge variant="secondary">{good.category}</Badge>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            onClick={() => {
+                              setEditingOffering(good)
+                              setOfferingDialogOpen(true)
+                            }}
+                          >
+                            Edit
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="destructive"
+                            onClick={() => handleDeleteOffering(good._id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                    {goodOfferings.length === 0 && (
+                      <p className="text-muted-foreground text-center py-4">No items added yet</p>
+                    )}
+                  </div>
+                  <Button 
+                    onClick={() => {
+                      setEditingOffering({ type: 'good', title: '', description: '', condition: '', category: '', estimatedValue: '', images: [] })
+                      setOfferingDialogOpen(true)
+                    }}
+                    className="w-full"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add New Item
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           <TabsContent value="notifications" className="space-y-6">
@@ -850,6 +1089,114 @@ export default function SettingsPage() {
             </Card>
           </TabsContent>
         </Tabs>
+
+        {/* Offering Edit Dialog */}
+        <Dialog open={offeringDialogOpen} onOpenChange={setOfferingDialogOpen}>
+          <DialogContent className="sm:max-w-[600px]">
+            <DialogHeader>
+              <DialogTitle>
+                {editingOffering?._id ? 'Edit' : 'Add New'} {editingOffering?.type === 'skill' ? 'Skill' : 'Item'}
+              </DialogTitle>
+              <DialogDescription>
+                {editingOffering?.type === 'skill' 
+                  ? 'Update your skill offering details'
+                  : 'Update your item listing details'
+                }
+              </DialogDescription>
+            </DialogHeader>
+            
+            {editingOffering && (
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="offeringTitle">
+                      {editingOffering.type === 'skill' ? 'Skill Name' : 'Item Name'}
+                    </Label>
+                    <Input 
+                      id="offeringTitle" 
+                      value={editingOffering.title || ''}
+                      onChange={(e) => setEditingOffering(prev => ({ ...prev, title: e.target.value }))}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="offeringCategory">Category</Label>
+                    <Input 
+                      id="offeringCategory" 
+                      value={editingOffering.category || ''}
+                      onChange={(e) => setEditingOffering(prev => ({ ...prev, category: e.target.value }))}
+                    />
+                  </div>
+                </div>
+
+                {editingOffering.type === 'skill' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="skillLevel">Skill Level</Label>
+                    <select 
+                      id="skillLevel"
+                      className="w-full p-2 border rounded"
+                      value={editingOffering.skillLevel || ''}
+                      onChange={(e) => setEditingOffering(prev => ({ ...prev, skillLevel: e.target.value }))}
+                    >
+                      <option value="">Select level</option>
+                      <option value="beginner">Beginner</option>
+                      <option value="intermediate">Intermediate</option>
+                      <option value="advanced">Advanced</option>
+                      <option value="expert">Expert</option>
+                    </select>
+                  </div>
+                )}
+
+                {editingOffering.type === 'good' && (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor="condition">Condition</Label>
+                      <select 
+                        id="condition"
+                        className="w-full p-2 border rounded"
+                        value={editingOffering.condition || ''}
+                        onChange={(e) => setEditingOffering(prev => ({ ...prev, condition: e.target.value }))}
+                      >
+                        <option value="">Select condition</option>
+                        <option value="new">New</option>
+                        <option value="like new">Like New</option>
+                        <option value="good">Good</option>
+                        <option value="fair">Fair</option>
+                        <option value="poor">Poor</option>
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="estimatedValue">Estimated Value (₹)</Label>
+                      <Input 
+                        id="estimatedValue" 
+                        value={editingOffering.estimatedValue || ''}
+                        onChange={(e) => setEditingOffering(prev => ({ ...prev, estimatedValue: e.target.value }))}
+                      />
+                    </div>
+                  </>
+                )}
+
+                <div className="space-y-2">
+                  <Label htmlFor="offeringDescription">Description</Label>
+                  <Textarea 
+                    id="offeringDescription" 
+                    rows={3}
+                    value={editingOffering.description || ''}
+                    onChange={(e) => setEditingOffering(prev => ({ ...prev, description: e.target.value }))}
+                  />
+                </div>
+              </div>
+            )}
+            
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setOfferingDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={() => handleSaveOffering(editingOffering)}>
+                {editingOffering?._id ? 'Update' : 'Add'} {editingOffering?.type === 'skill' ? 'Skill' : 'Item'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   )
