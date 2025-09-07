@@ -101,7 +101,7 @@ export default function SignupPage() {
       
       // For debugging - test if the server is responding at all
       try {
-        const testResponse = await fetch("http://localhost:3001/api/auth/status", {
+        const testResponse = await fetch("https://backendd-fuux.onrender.com/api/auth/status", {
           method: "GET",
           mode: "cors",
           headers: {
@@ -113,7 +113,7 @@ export default function SignupPage() {
         console.error("Server connection test failed:", testError);
       }
       
-      const response = await fetch("http://localhost:3001/api/auth/signup", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/auth/signup", {
         method: "POST",
         mode: "cors",
         headers: {

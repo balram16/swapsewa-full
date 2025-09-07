@@ -67,7 +67,7 @@ export default function MessagesPage() {
 
       setUserId(localStorage.getItem("userId"))
       
-      const response = await fetch("http://localhost:3001/api/chats", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/chats", {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -122,7 +122,7 @@ export default function MessagesPage() {
       
       console.log("Fetching chat messages for ID:", chatId)
       
-      const response = await fetch(`http://localhost:3001/api/chats/${chatId}`, {
+      const response = await fetch(`https://backendd-fuux.onrender.com/api/chats/${chatId}`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -167,7 +167,7 @@ export default function MessagesPage() {
         )
         
         // Mark messages as read on the server
-        fetch(`http://localhost:3001/api/chats/${chatId}/read`, {
+        fetch(`https://backendd-fuux.onrender.com/api/chats/${chatId}/read`, {
           method: "PUT",
           headers: {
             "Authorization": `Bearer ${token}`
@@ -243,7 +243,7 @@ export default function MessagesPage() {
       // Scroll to bottom immediately after sending our message
       setTimeout(scrollToBottom, 50)
       
-      const response = await fetch("http://localhost:3001/api/chats/message", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/chats/message", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -328,7 +328,7 @@ export default function MessagesPage() {
       const token = localStorage.getItem("authToken")
       if (!token) return
       
-      const response = await fetch(`http://localhost:3001/api/chats/${activeChat._id}/complete`, {
+      const response = await fetch(`https://backendd-fuux.onrender.com/api/chats/${activeChat._id}/complete`, {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${token}`
@@ -401,7 +401,7 @@ export default function MessagesPage() {
     // If userId is not available in localStorage, we'll need to fetch it
     if (!storedUserId) {
       // Fetch user profile to get ID
-      fetch("http://localhost:3001/api/users/profile", {
+      fetch("https://backendd-fuux.onrender.com/api/users/profile", {
         headers: {
           "Authorization": `Bearer ${token}`
         }

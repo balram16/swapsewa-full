@@ -65,7 +65,7 @@ export default function SettingsPage() {
   const loadUserOfferings = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      const response = await fetch("http://localhost:3001/api/users/profile", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/users/profile", {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"
@@ -87,7 +87,7 @@ export default function SettingsPage() {
   const handleDeleteOffering = async (offeringId: string) => {
     try {
       const token = localStorage.getItem("authToken");
-      const response = await fetch(`http://localhost:3001/api/users/offerings/${offeringId}`, {
+      const response = await fetch(`https://backendd-fuux.onrender.com/api/users/offerings/${offeringId}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -119,8 +119,8 @@ export default function SettingsPage() {
       const token = localStorage.getItem("authToken");
       const isEditing = offeringData._id;
       const url = isEditing 
-        ? `http://localhost:3001/api/users/offerings/${offeringData._id}`
-        : "http://localhost:3001/api/users/offerings";
+        ? `https://backendd-fuux.onrender.com/api/users/offerings/${offeringData._id}`
+        : "https://backendd-fuux.onrender.com/api/users/offerings";
       
       const response = await fetch(url, {
         method: isEditing ? "PUT" : "POST",

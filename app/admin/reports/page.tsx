@@ -89,7 +89,7 @@ export default function AdminReports() {
         format: download ? format : 'json'
       })
 
-      const response = await fetch(`http://localhost:3001/api/admin/reports?${params}`, {
+      const response = await fetch(`https://backendd-fuux.onrender.com/api/admin/reports?${params}`, {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"

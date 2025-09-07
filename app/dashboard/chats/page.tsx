@@ -44,7 +44,7 @@ export default function ChatsPage() {
 
       setUserId(localStorage.getItem("userId"))
       
-      const response = await fetch("http://localhost:3001/api/chats", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/chats", {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -99,7 +99,7 @@ export default function ChatsPage() {
       
       console.log("Fetching chat messages for ID:", chatId)
       
-      const response = await fetch(`http://localhost:3001/api/chats/${chatId}`, {
+      const response = await fetch(`https://backendd-fuux.onrender.com/api/chats/${chatId}`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -135,7 +135,7 @@ export default function ChatsPage() {
         )
         
         // Mark messages as read on the server
-        fetch(`http://localhost:3001/api/chats/${chatId}/read`, {
+        fetch(`https://backendd-fuux.onrender.com/api/chats/${chatId}/read`, {
           method: "PUT",
           headers: {
             "Authorization": `Bearer ${token}`
@@ -211,7 +211,7 @@ export default function ChatsPage() {
       // Scroll to bottom immediately
       setTimeout(scrollToBottom, 10)
       
-      const response = await fetch("http://localhost:3001/api/chats/message", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/chats/message", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -296,7 +296,7 @@ export default function ChatsPage() {
       const token = localStorage.getItem("authToken")
       if (!token) return
       
-      const response = await fetch(`http://localhost:3001/api/chats/${activeChat._id}/complete`, {
+      const response = await fetch(`https://backendd-fuux.onrender.com/api/chats/${activeChat._id}/complete`, {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${token}`
@@ -425,7 +425,7 @@ export default function ChatsPage() {
         return
       }
       
-      const response = await fetch("http://localhost:3001/api/chats/debug/connection", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/chats/debug/connection", {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -463,7 +463,7 @@ export default function ChatsPage() {
         return
       }
       
-      const response = await fetch("http://localhost:3001/api/chats/debug/create-test-chat", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/chats/debug/create-test-chat", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`

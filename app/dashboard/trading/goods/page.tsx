@@ -90,7 +90,7 @@ export default function GoodsBarterPage() {
         }
         
         // Get all users with goods offerings from their profile
-        const response = await fetch("http://localhost:3001/api/users?hasGoodOfferings=true", {
+        const response = await fetch("https://backendd-fuux.onrender.com/api/users?hasGoodOfferings=true", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -226,7 +226,7 @@ export default function GoodsBarterPage() {
         return
       }
 
-      const response = await fetch("http://localhost:3001/api/users/offerings", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/users/offerings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -332,7 +332,7 @@ export default function GoodsBarterPage() {
       }
       
       // Send connection request with all user goods
-      const response = await fetch("http://localhost:3001/api/users/connect", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/users/connect", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

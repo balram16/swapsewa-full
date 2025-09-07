@@ -61,7 +61,7 @@ export default function AdminNotifications() {
         return
       }
 
-      const response = await fetch("http://localhost:3001/api/admin/notifications/history", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/admin/notifications/history", {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"
@@ -108,7 +108,7 @@ export default function AdminNotifications() {
         return
       }
 
-      const response = await fetch("http://localhost:3001/api/admin/notifications/send", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/admin/notifications/send", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,

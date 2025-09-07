@@ -11,7 +11,7 @@ export default function LogoutPage() {
   useEffect(() => {
     const handleLogout = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/auth/logout", {
+        const response = await fetch("https://backendd-fuux.onrender.com/api/auth/logout", {
           method: "POST",
           credentials: "include",
         })

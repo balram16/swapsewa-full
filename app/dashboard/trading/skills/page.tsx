@@ -74,7 +74,7 @@ export default function SkillsBarterPage() {
         }
         
         // Get all users with skill offerings from their profile
-        const response = await fetch("http://localhost:3001/api/users?hasSkillOfferings=true", {
+        const response = await fetch("https://backendd-fuux.onrender.com/api/users?hasSkillOfferings=true", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -179,14 +179,14 @@ export default function SkillsBarterPage() {
         return
       }
       
-      console.log("Sending request to:", `http://localhost:3001/api/users/connect`)
+      console.log("Sending request to:", `https://backendd-fuux.onrender.com/api/users/connect`)
       console.log("Request data:", {
         recipientId: selectedSkill.userId,
         skillId: selectedSkill.id
       })
       
       // Send connection request with all user skills
-      const response = await fetch("http://localhost:3001/api/users/connect", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/users/connect", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

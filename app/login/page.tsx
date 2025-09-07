@@ -28,7 +28,7 @@ export default function LoginPage() {
       
       // For debugging - test if the server is responding at all
       try {
-        const testResponse = await fetch("http://localhost:3001/api/auth/status", {
+        const testResponse = await fetch("https://backendd-fuux.onrender.com/api/auth/status", {
           method: "GET",
           mode: "cors",
           headers: {
@@ -40,7 +40,7 @@ export default function LoginPage() {
         console.error("Server connection test failed:", testError);
       }
       
-      const response = await fetch("http://localhost:3001/api/auth/login", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/auth/login", {
         method: "POST",
         mode: "cors",
         headers: {

@@ -56,7 +56,7 @@ export default function AdminLayout({
 
       // Verify token with backend
       console.log("Verifying token with backend...")
-      const response = await fetch("http://localhost:3001/api/auth/me", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/auth/me", {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"
