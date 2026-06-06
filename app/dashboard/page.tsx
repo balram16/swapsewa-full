@@ -30,8 +30,8 @@ export default function DashboardPage() {
               <Award className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">85/100</div>
-              <p className="text-xs text-muted-foreground">+10 points this month</p>
+              <div className="text-2xl font-bold">Complete trades to See the Score</div>
+              <p className="text-xs text-muted-foreground"></p>
               <div className="mt-3 h-2 w-full rounded-full bg-muted">
                 <div className="h-2 w-[85%] rounded-full bg-primary"></div>
               </div>
@@ -43,8 +43,8 @@ export default function DashboardPage() {
               <Handshake className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">4</div>
-              <p className="text-xs text-muted-foreground">2 pending confirmation</p>
+              <div className="text-2xl font-bold">0</div>
+              <p className="text-xs text-muted-foreground"></p>
             </CardContent>
           </Card>
           <Card>
@@ -53,8 +53,8 @@ export default function DashboardPage() {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">15</div>
-              <p className="text-xs text-muted-foreground">+3 this month</p>
+              <div className="text-2xl font-bold">0</div>
+              <p className="text-xs text-muted-foreground"></p>
             </CardContent>
           </Card>
           <Card>
@@ -63,8 +63,8 @@ export default function DashboardPage() {
               <Clock className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">7</div>
-              <p className="text-xs text-muted-foreground">From 3 different users</p>
+              <div className="text-2xl font-bold">0</div>
+              <p className="text-xs text-muted-foreground"></p>
             </CardContent>
           </Card>
         </div>
