@@ -167,50 +167,6 @@ export default function DashboardPage() {
               <CardTitle>Recent Activity</CardTitle>
               <CardDescription>Your latest barter interactions</CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <div className="rounded-full bg-primary/10 p-2">
-                    <Handshake className="h-4 w-4 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">Trade Completed with Amit Shah</p>
-                    <p className="text-xs text-muted-foreground">You exchanged Web Development for Home-cooked Meals</p>
-                    <p className="text-xs text-muted-foreground">2 hours ago</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="rounded-full bg-primary/10 p-2">
-                    <MessageSquare className="h-4 w-4 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">New message from Neha Gupta</p>
-                    <p className="text-xs text-muted-foreground">Regarding your Photography Services</p>
-                    <p className="text-xs text-muted-foreground">Yesterday</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="rounded-full bg-primary/10 p-2">
-                    <Award className="h-4 w-4 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">Trust Score Increased</p>
-                    <p className="text-xs text-muted-foreground">You gained 5 points after completing a trade</p>
-                    <p className="text-xs text-muted-foreground">2 days ago</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="rounded-full bg-primary/10 p-2">
-                    <Handshake className="h-4 w-4 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium">New Trade Request from Vikram Singh</p>
-                    <p className="text-xs text-muted-foreground">Offering Carpentry for your Cooking Lessons</p>
-                    <p className="text-xs text-muted-foreground">3 days ago</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
           </Card>
         </div>
       </div>
