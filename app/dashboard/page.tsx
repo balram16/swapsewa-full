@@ -165,7 +165,7 @@ export default function DashboardPage() {
           <Card className="col-span-1">
             <CardHeader>
               <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>Your latest barter interactions</CardDescription>
+              <CardDescription>Your latest barter interactions will appear here.</CardDescription>
             </CardHeader>
           </Card>
         </div>
