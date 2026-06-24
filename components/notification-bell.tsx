@@ -58,12 +58,12 @@ export function NotificationBell() {
       setLoading(true)
       
       const [notificationsResponse, countResponse] = await Promise.all([
-        fetch("http://localhost:3001/api/notifications?limit=10", {
+        fetch("https://backendd-fuux.onrender.com/api/notifications?limit=10", {
           headers: {
             "Authorization": `Bearer ${token}`
           }
         }),
-        fetch("http://localhost:3001/api/notifications/unread-count", {
+        fetch("https://backendd-fuux.onrender.com/api/notifications/unread-count", {
           headers: {
             "Authorization": `Bearer ${token}`
           }
@@ -90,7 +90,7 @@ export function NotificationBell() {
       const token = localStorage.getItem("authToken")
       if (!token) return
       
-      const response = await fetch("http://localhost:3001/api/notifications/mark-all-read", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/notifications/mark-all-read", {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -191,7 +191,7 @@ export function NotificationBell() {
       }
       
       // Mark notification as read
-      const markReadResponse = await fetch(`http://localhost:3001/api/notifications/${notification._id}/read`, {
+      const markReadResponse = await fetch(`https://backendd-fuux.onrender.com/api/notifications/${notification._id}/read`, {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${token}`
@@ -224,7 +224,7 @@ export function NotificationBell() {
       if (!token) return
       
       // First create a test notification
-      const notificationResponse = await fetch(`http://localhost:3001/api/notifications/test/create`, {
+      const notificationResponse = await fetch(`https://backendd-fuux.onrender.com/api/notifications/test/create`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -295,7 +295,7 @@ export function NotificationBell() {
       console.log("Request body:", requestBody)
       
       // Accept the trade request
-      const response = await fetch("http://localhost:3001/api/notifications/accept-trade", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/notifications/accept-trade", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -370,7 +370,7 @@ export function NotificationBell() {
       }
       
       // Send confirmation to the API
-      const response = await fetch("http://localhost:3001/api/notifications/confirm-trade", {
+      const response = await fetch("https://backendd-fuux.onrender.com/api/notifications/confirm-trade", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
