@@ -86,6 +86,81 @@ To become a trusted community-driven exchange platform that redefines ownership 
 
 ---
 
+## Setup Instructions
+
+### Prerequisites
+
+- Node.js (v16 or higher)
+- MongoDB database
+- npm or yarn
+
+### Backend Setup
+
+1. Navigate to the backend directory:
+   ```
+   cd backend
+   ```
+
+2. Install dependencies:
+   ```
+   npm install
+   ```
+
+3. Create a `.env` file in the backend directory with the following content:
+   ```
+   PORT=3001
+   NODE_ENV=development
+   MONGODB_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   FRONTEND_URL=http://localhost:3000
+   ```
+
+4. Start the backend server:
+   ```
+   npm start
+   ```
+   
+   For development with auto-reload:
+   ```
+   npm run dev
+   ```
+
+### Frontend Setup
+
+1. Install dependencies:
+   ```
+   npm install
+   ```
+
+2. Start the development server:
+   ```
+   npm run dev
+   ```
+
+3. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## API Documentation
+
+The API is organized around RESTful principles with the following main endpoints:
+
+- `/api/auth`: Authentication endpoints (signup, login, etc.)
+- `/api/users`: User profile endpoints
+- `/api/matches`: Match discovery and management
+- `/api/messages`: Chat and communication
+- `/api/skills`: Skill management
+- `/api/interests`: Interest management
+- `/api/notifications`: User notifications
+
+## Socket.io Events
+
+The application uses Socket.io for real-time functionality:
+
+- `join-conversation`: Join a conversation room
+- `typing`: Indicate user is typing
+- `new-message`: New message notification
+- `call-signal`: WebRTC signaling for video/audio calls
+
+
 ## 🏗️ System Architecture
 
 ```text
